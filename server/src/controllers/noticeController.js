@@ -4,7 +4,11 @@ const {
   runGeminiQuery,
   fileToGenerativePart,
 } = require("../services/geminiService");
-const { uploadToCloudinary } = require("../services/cloudinary.service"); // Import Cloudinary uploader
+const { uploadToCloudinary } = require("../config/cloudinary"); // Import Cloudinary uploader
+
+// No longer need fs or path for local file management in this controller
+// const fs = require('fs');
+// const path = require('path');
 
 exports.uploadNotice = async (req, res) => {
   if (!req.file) {
@@ -78,7 +82,7 @@ exports.uploadNotice = async (req, res) => {
     notice.status = "processing";
     await notice.save();
 
-    // --- 2. Clean Text (using Gemini) ---
+    //  2. Clean Text (using Gemini) 
     const cleanPromptParts = [
       {
         text:
@@ -90,7 +94,7 @@ exports.uploadNotice = async (req, res) => {
     notice.cleanedText = cleanedText;
     await notice.save();
 
-    // --- 3. Analyze the Notice (Using Gemini) ---
+    //  3. Analyze the Notice (Using Gemini) 
     const analyzePromptParts = [
       {
         text: `You are an expert tax notice analyzer. Analyze the following cleaned tax notice text.
