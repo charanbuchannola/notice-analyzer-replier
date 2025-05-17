@@ -1,14 +1,10 @@
-const Notice = require("../models/Notice");
+const Notice = require("../models/notice.model");
 const pdf = require("pdf-parse"); // For text-based PDFs
 const {
   runGeminiQuery,
   fileToGenerativePart,
 } = require("../services/geminiService");
-const { uploadToCloudinary } = require("../config/cloudinary"); // Import Cloudinary uploader
-
-// No longer need fs or path for local file management in this controller
-// const fs = require('fs');
-// const path = require('path');
+const { uploadToCloudinary } = require("../services/cloudinary.service"); // Import Cloudinary uploader
 
 exports.uploadNotice = async (req, res) => {
   if (!req.file) {
@@ -82,7 +78,7 @@ exports.uploadNotice = async (req, res) => {
     notice.status = "processing";
     await notice.save();
 
-    //  2. Clean Text (using Gemini) 
+    //  2. Clean Text (using Gemini)
     const cleanPromptParts = [
       {
         text:
@@ -94,7 +90,7 @@ exports.uploadNotice = async (req, res) => {
     notice.cleanedText = cleanedText;
     await notice.save();
 
-    //  3. Analyze the Notice (Using Gemini) 
+    //  3. Analyze the Notice (Using Gemini)
     const analyzePromptParts = [
       {
         text: `You are an expert tax notice analyzer. Analyze the following cleaned tax notice text.
@@ -184,12 +180,10 @@ exports.uploadNotice = async (req, res) => {
     notice.status = "reply_drafted";
     await notice.save();
 
-    res
-      .status(201)
-      .json({
-        message: "Notice processed and uploaded to Cloudinary successfully.",
-        notice,
-      });
+    res.status(201).json({
+      message: "Notice processed and uploaded to Cloudinary successfully.",
+      notice,
+    });
   } catch (error) {
     console.error("Error processing notice:", error);
     // If Cloudinary upload succeeded but subsequent steps failed, you might want to delete the file from Cloudinary.
@@ -204,12 +198,10 @@ exports.uploadNotice = async (req, res) => {
     //     console.error('Error cleaning up Cloudinary file:', cleanupError);
     //   }
     // }
-    res
-      .status(500)
-      .json({
-        message: `Error processing notice: ${error.message}`,
-        error: error.toString(),
-      });
+    res.status(500).json({
+      message: `Error processing notice: ${error.message}`,
+      error: error.toString(),
+    });
   }
 };
 
