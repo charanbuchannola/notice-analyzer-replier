@@ -1,38 +1,32 @@
-const cloudinary = require("cloudinary").v2;
-// const { url } = require("inspector");
-const { Readable } = require("stream");
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
 
-// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true, 
 });
 
-const uploadImage = async (imageBuffer) => {
+
+const uploadToCloudinary = (fileBuffer, originalFilename) => {
   return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder: "stackwave", resource_type: "auto" },
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'raw', // For non-image files like PDF
+        public_id: `tax_notices/${Date.now()}-${originalFilename.replace(/\s+/g, '_')}`, // Optional: set a public_id or let Cloudinary generate
+        // folder: "tax_notices", // You can organize uploads into folders
+      },
       (error, result) => {
         if (error) {
-          reject(error);
-        } else {
-          resolve({
-            url: result.url,
-            public_id: result.public_id,
-            asset_id: result.asset_id,
-            format: result.format,
-          });
+          console.error('Cloudinary Upload Error:', error);
+          return reject(error);
         }
+        resolve(result);
       }
     );
-
-    const fileStream = new Readable();
-    fileStream.push(imageBuffer);
-    fileStream.push(null);
-
-    fileStream.pipe(stream);
+    uploadStream.end(fileBuffer);
   });
 };
 
-module.exports = { uploadImage };
+module.exports = { cloudinary, uploadToCloudinary };

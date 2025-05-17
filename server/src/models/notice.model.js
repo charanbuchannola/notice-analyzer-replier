@@ -1,49 +1,54 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const NoticeSchema = new mongoose.Schema({
   originalFilename: {
     type: String,
     required: true,
   },
-  filePath: { // Path to the stored PDF, if we decide to store it
+ 
+  cloudinaryUrl: {
+    // URL of the file on Cloudinary
+    type: String,
+    required: true,
+  },
+  cloudinaryPublicId: {
+    // Public ID for managing the file on Cloudinary (e.g., for deletion)
     type: String,
     required: true,
   },
   extractedText: {
     type: String,
-    default: '',
+    default: "",
   },
   cleanedText: {
     type: String,
-    default: '',
+    default: "",
   },
-  analysis: { // Store structured analysis from Gemini
+  analysis: {
     type: Object,
     default: {},
   },
   summary: {
     type: String,
-    default: '',
+    default: "",
   },
   suggestedActions: {
     type: String,
-    default: '',
+    default: "",
   },
   draftReply: {
     type: String,
-    default: '',
+    default: "",
   },
   status: {
     type: String,
-    enum: ['uploaded', 'processing', 'analyzed', 'reply_drafted', 'completed'],
-    default: 'uploaded',
+    enum: ["uploaded", "processing", "analyzed", "reply_drafted", "completed"],
+    default: "uploaded",
   },
   uploadedAt: {
     type: Date,
     default: Date.now,
   },
-  // we might add a userId if we implement user authentication
-  // userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
-module.exports = mongoose.model('Notice', NoticeSchema);
+module.exports = mongoose.model("Notice", NoticeSchema);
