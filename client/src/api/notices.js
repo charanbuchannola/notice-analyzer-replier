@@ -36,7 +36,6 @@ export const getNoticeById = async (id) => {
   }
 };
 
-// Add this function for uploading a reply
 export const uploadReply = async (id, draftReply) => {
   try {
     const response = await axios.put(`${API_URL}/${id}/reply`, { draftReply });

@@ -137,8 +137,10 @@ exports.uploadNotice = async (req, res) => {
     }
     notice.analysis = analysisData.extractedInfo || {};
     notice.summary = analysisData.summary || "No summary provided.";
-    notice.suggestedActions =
-      analysisData.suggestedNextSteps || "No specific actions suggested.";
+    // Ensure suggestedActions is always a string
+    notice.suggestedActions = Array.isArray(analysisData.suggestedNextSteps)
+      ? analysisData.suggestedNextSteps.join("\n")
+      : analysisData.suggestedNextSteps || "No specific actions suggested.";
     notice.status = "analyzed";
     await notice.save();
 

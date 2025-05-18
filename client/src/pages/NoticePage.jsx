@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchNotices, getNoticeById } from "../api/notices";
+import { getNoticeById } from "../api/notices";
 import NoticeDetail from "../components/NoticeDetail";
 import ReplyEditor from "../components/ReplyEditor";
 
@@ -25,13 +25,8 @@ const NoticePage = () => {
     fetchNotice();
   }, [id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
