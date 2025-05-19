@@ -5,7 +5,10 @@ const noticeRoutes = require("./routes/noticeRoutes");
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://notice-analyzer-replier-frontend.onrender.com",
+    ],
     credentials: true,
   })
 );
