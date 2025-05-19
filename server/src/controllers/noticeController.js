@@ -91,28 +91,41 @@ exports.uploadNotice = async (req, res) => {
     await notice.save();
 
     //  3. Analyze the Notice (Using Gemini)
+    // ...existing code...
+    //  3. Analyze the Notice (Using Gemini)
     const analyzePromptParts = [
       {
-        text: `You are an expert tax notice analyzer. Analyze the following cleaned tax notice text.
-        Extract the following information in a structured JSON format:
-        - typeOfNotice: (e.g., GST, TDS, Income Tax, Scrutiny, Demand Notice, etc.)
-        - panNumber: (Permanent Account Number)
-        - noticeDate: (Date on the notice, format YYYY-MM-DD if possible)
-        - deadline: (Response deadline, format YYYY-MM-DD if possible)
-        - assessmentYear: (e.g., 2022-23)
-        - reasonForNotice: (Briefly state the main reason)
-        - requiredAction: (What is explicitly asked of the recipient)
-        - issuingAuthority: (e.g., Income Tax Department, GST Office name)
+        text: `
+You are an expert tax notice analyzer. Analyze the following cleaned tax notice text.
 
-        If any information is not clearly present, use "Not Found" or null for the value.
+Extract the following information in a structured JSON format. For each field, search for common synonyms and formats as shown in the examples. If not found, use "Not Found" or null.
 
-        Additionally, provide a concise summary of the notice and suggest the next steps a Chartered Accountant or business should take.
+- typeOfNotice: (e.g., GST, TDS, Income Tax, Scrutiny, Demand Notice, etc.)
+- panNumber: (Permanent Account Number, e.g., "PAN: AACAJ8493R")
+- noticeDate: (Date on the notice, e.g., "Date: 12/03/2024" or "Dated: 12-03-2024")
+- deadline: (Response deadline, e.g., "Due Date: 15/04/2024" or "within 30 days from date of service")
+- assessmentYear: (e.g., "Assessment Year: 2018–19" or "AY 2018-19")
+- reasonForNotice: (Briefly state the main reason, e.g., "Reason: Non-filing of return")
+- requiredAction: (What is explicitly asked of the recipient, e.g., "You are required to pay...", "Submit reply...", etc.)
+- issuingAuthority: (e.g., "The Assessment Unit", "Income Tax Officer", "Income Tax Department")
+- din: (Document Identification Number, e.g., "DIN: ITBA/AST/S/156/2023-24/1062426478(1)")
+- taxpayerName: (Name of the taxpayer/entity, e.g., "Jawaharnagar Educational Society")
+- demandAmount: (Amount demanded, e.g., "Demand: ₹36,63,854", "Amount Payable: Rs. 36,63,854")
+- status: (Status of taxpayer, e.g., "AOP (Association of Persons)", "Individual", "Company")
+- address: (Address of taxpayer/entity, as per notice, e.g., lines following "Address:" or at the top of the notice)
 
-        Format your entire response as a single JSON object with keys: "extractedInfo", "summary", and "suggestedNextSteps".
+If any information is not clearly present, use "Not Found" or null for the value.
 
-        Cleaned Tax Notice Text:\n${cleanedText}`,
+Additionally, provide a concise summary of the notice and suggest the next steps a Chartered Accountant or business should take.
+
+Format your entire response as a single JSON object with keys: "extractedInfo", "summary", and "suggestedNextSteps".
+
+Cleaned Tax Notice Text:
+${cleanedText}
+    `,
       },
     ];
+    // ...existing code...
     const analysisResultText = await runGeminiQuery("text", analyzePromptParts);
     let analysisData = {
       extractedInfo: {},

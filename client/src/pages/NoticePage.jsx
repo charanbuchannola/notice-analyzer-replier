@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getNoticeById } from "../api/notices";
 import NoticeDetail from "../components/NoticeDetail";
-import ReplyEditor from "../components/ReplyEditor";
 
 const NoticePage = () => {
   const { id } = useParams();
@@ -33,7 +32,6 @@ const NoticePage = () => {
       {notice && (
         <>
           <NoticeDetail notice={notice} />
-          <ReplyEditor noticeId={notice._id} />
         </>
       )}
     </div>

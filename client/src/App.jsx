@@ -8,20 +8,30 @@ import NoticeList from "./components/NoticeList";
 const App = () => {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
-        <header className="bg-blue-700 text-white py-6 shadow">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold tracking-tight">Notice Analyzer</h1>
+      <div className="min-h-screen bg-gray-100">
+        <header className="bg-white shadow sticky top-0 z-20">
+          <div className="container mx-auto px-4 flex items-center justify-between h-16">
+            <div className="flex items-center gap-2">
+              <img src="/vite.svg" alt="Logo" className="h-8 w-8" />
+              <span className="text-xl font-bold text-blue-700 tracking-tight">Notice Analyzer</span>
+            </div>
+            <nav className="flex gap-6">
+              <a href="/" className="text-blue-700 hover:text-blue-900 font-medium">Home</a>
+              <a href="/notices" className="text-blue-700 hover:text-blue-900 font-medium">Notices</a>
+              <a href="/notices/upload" className="text-blue-700 hover:text-blue-900 font-medium">Upload</a>
+            </nav>
           </div>
         </header>
-        <main className="container mx-auto px-4 py-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/notices" element={<NoticeList />} />
-              <Route path="/notices/upload" element={<NoticeUpload />} />
-              <Route path="/notices/:id" element={<NoticePage />} />
-            </Routes>
+        <main className="min-h-[80vh] bg-gray-100 py-8">
+          <div className="container mx-auto px-4">
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/notices" element={<NoticeList />} />
+                <Route path="/notices/upload" element={<NoticeUpload />} />
+                <Route path="/notices/:id" element={<NoticePage />} />
+              </Routes>
+            </div>
           </div>
         </main>
       </div>
