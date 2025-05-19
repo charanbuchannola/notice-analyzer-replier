@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_URL =
-  "https://notice-analyzer-replier-backend.onrender.com/api/notices";
+const API_URL = "https://notice-analyzer-replier-backend.onrender.com";
 
 export const fetchNotices = async () => {
   try {
