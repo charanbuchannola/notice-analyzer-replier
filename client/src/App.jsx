@@ -13,12 +13,17 @@ const App = () => {
           <div className="container mx-auto px-4 flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <img src="/vite.svg" alt="Logo" className="h-8 w-8" />
-              <span className="text-xl font-bold text-blue-700 tracking-tight">Notice Analyzer</span>
+              <span className="text-xl font-bold text-blue-700 tracking-tight">
+                Notice Analyzer
+              </span>
             </div>
             <nav className="flex gap-6">
-              <a href="/" className="text-blue-700 hover:text-blue-900 font-medium">Home</a>
-              <a href="/notices" className="text-blue-700 hover:text-blue-900 font-medium">Notices</a>
-              <a href="/notices/upload" className="text-blue-700 hover:text-blue-900 font-medium">Upload</a>
+              <a
+                href="/"
+                className="text-blue-700 hover:text-blue-900 font-medium"
+              >
+                Home
+              </a>
             </nav>
           </div>
         </header>
